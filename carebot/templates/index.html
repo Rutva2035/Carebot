@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">HEALTHCARE WORKFLOW PROTOTYPE</div>
+  <h1>Understand your symptoms.<br><span>Find your next step.</span></h1>
+  <p class="lead">CareBot is a demonstration application for symptom-record capture, catalogue matching and appointment-request workflows.</p>
+  <div class="actions">
+    <a class="button primary" href="{{ url_for('auth.register') }}">Get started</a>
+    <a class="button secondary" href="{{ url_for('auth.login') }}">Sign in</a>
+  </div>
+  <div class="notice"><strong>Important:</strong> CareBot does not diagnose, triage or recommend treatment. Its sample matching catalogue is illustrative only. For medical concerns, contact a qualified healthcare professional. For emergencies, contact local emergency services.</div>
+</section>
+<section class="feature-grid">
+  <article class="panel"><div class="feature-icon">01</div><h3>Symptom records</h3><p>Capture user-reported symptoms and maintain a personal assessment history.</p></article>
+  <article class="panel"><div class="feature-icon">02</div><h3>Catalogue matching</h3><p>Demonstrate transparent weighted matching against a configurable sample catalogue.</p></article>
+  <article class="panel"><div class="feature-icon">03</div><h3>Appointment requests</h3><p>Request a time with a listed provider and prevent duplicate provider/time bookings.</p></article>
+</section>
+{% endblock %}

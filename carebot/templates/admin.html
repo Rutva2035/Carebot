@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">ADMINISTRATION</div><h1>CareBot admin</h1><p class="muted">Manage provider directory entries and review appointment requests.</p></div></div>
+<div class="two-col">
+<section class="panel"><h2>Add provider directory entry</h2><form method="post" action="{{ url_for('admin.add_doctor') }}" class="form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Provider name<input name="display_name" required maxlength="150"></label>
+<label>Specialty<input name="specialty" required maxlength="120"></label>
+<label>Clinic name<input name="clinic_name" required maxlength="150"></label>
+<label>Location<input name="location" required maxlength="255"></label>
+<label>Contact email<input type="email" name="contact_email"></label>
+<button class="button primary">Add provider</button></form></section>
+<section class="panel"><h2>Add catalogue symptom</h2><form method="post" action="{{ url_for('admin.add_symptom') }}" class="form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Symptom name<input name="name" required maxlength="100"></label><button class="button primary">Add symptom</button></form>
+<h3>Current symptoms</h3><div class="tag-list">{% for s in symptoms %}<span class="pill">{{ s.name }}</span>{% endfor %}</div></section>
+</div>
+<section class="panel"><h2>Appointment requests</h2>
+{% if appointments %}<div class="table-wrap"><table><thead><tr><th>User</th><th>Provider</th><th>Time</th><th>Status</th><th>Action</th></tr></thead><tbody>
+{% for a in appointments %}<tr><td>{{ a.user.email }}</td><td>{{ a.doctor.display_name }}</td><td>{{ a.starts_at.strftime("%d %b %Y, %I:%M %p") }}</td><td>{{ a.status }}</td><td>{% if a.status == "booked" %}<form method="post" action="{{ url_for('admin.cancel_appointment', appointment_id=a.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button danger small">Cancel</button></form>{% endif %}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="empty">No appointments yet.</p>{% endif %}
+</section>
+{% endblock %}

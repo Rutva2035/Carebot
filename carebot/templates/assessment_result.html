@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Assessment record{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">RECORD SAVED</div><h1>Your symptom record</h1><p class="muted">{{ assessment.created_at.strftime("%d %b %Y, %I:%M %p") }} · {{ assessment.symptoms_text }}</p></div><a class="button secondary" href="{{ url_for('main.dashboard') }}">Dashboard</a></div>
+<div class="notice"><strong>Important:</strong> The results below are catalogue matches for demonstration only. Scores are not probabilities, severity assessments or diagnoses. Do not use them to make healthcare decisions.</div>
+<div class="panel"><h2>Catalogue matches</h2>
+{% if matches %}{% for condition, score in matches %}<article class="match"><div><h3>{{ condition.name }}</h3><p>{{ condition.description }}</p><p>{{ condition.advice }}</p><small>{{ condition.source_note }}</small></div><span class="score">Score {{ score }}</span></article>{% endfor %}
+{% else %}<p class="empty">No catalogue matches. This does not mean that no medical condition is present.</p>{% endif %}
+</div>
+<div class="panel"><h2>Listed providers</h2><p class="muted">These are directory entries, not verified referrals. Contact providers directly to confirm credentials and availability.</p>
+{% if doctors %}
+<div class="provider-grid">
+{% for d in doctors %}
+<article class="provider">
+  <h3>{{ d.display_name }}</h3>
+  <p>{{ d.specialty }}</p>
+  <strong>{{ d.clinic_name }}</strong>
+  <p>{{ d.location }}</p>
+  {% if d.contact_email %}<a href="mailto:{{ d.contact_email }}">{{ d.contact_email }}</a>{% endif %}
+  <form method="post" action="{{ url_for('main.book_appointment') }}" class="form booking-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="doctor_id" value="{{ d.id }}">
+    <label>Appointment date<input type="date" name="date" required></label>
+    <label>Appointment time<input type="time" name="time" step="1800" required></label>
+    <label>Reason (optional)<input name="reason" maxlength="500" placeholder="Brief reason"></label>
+    <button class="button primary" type="submit">Request appointment</button>
+  </form>
+</article>
+{% endfor %}
+</div>
+{% else %}<p class="empty">No provider directory entries yet.</p>{% endif %}
+<p class="muted">Submitting a request stores it in CareBot; it does not confirm real clinic availability. Contact the provider directly.</p>
+</div>
+{% endblock %}

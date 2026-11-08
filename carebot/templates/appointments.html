@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Appointments{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">SCHEDULING</div><h1>Appointment requests</h1><p class="muted">A saved request is not a confirmed clinic appointment.</p></div></div>
+<div class="panel">
+{% if appointments %}<div class="table-wrap"><table><thead><tr><th>Provider</th><th>Clinic</th><th>Requested time</th><th>Status</th></tr></thead><tbody>{% for a in appointments %}<tr><td>{{ a.doctor.display_name }}</td><td>{{ a.doctor.clinic_name }}</td><td>{{ a.starts_at.strftime("%d %b %Y, %I:%M %p") }}</td><td><span class="pill">{{ a.status }}</span></td></tr>{% endfor %}</tbody></table></div>
+{% else %}<p class="empty">No appointment requests found.</p>{% endif %}
+</div>
+{% endblock %}

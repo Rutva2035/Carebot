@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Symptom record{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="eyebrow">ASSESSMENT WORKFLOW</div><h1>Record your symptoms</h1>
+  <div class="notice"><strong>Not medical advice.</strong> This tool records symptoms and demonstrates matching against a sample catalogue. It cannot identify or rule out a medical condition.</div>
+  <form method="post" class="panel form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Select symptoms from the catalogue</label>
+    <div class="check-grid">
+      {% for symptom in symptoms %}<label class="check"><input type="checkbox" name="symptoms" value="{{ symptom.id }}"><span>{{ symptom.name|title }}</span></label>{% else %}<p>No catalogue symptoms have been added yet.</p>{% endfor %}
+    </div>
+    <label>Other symptoms <span class="muted">(comma-separated, optional)</span><textarea name="other_symptoms" rows="3" placeholder="Enter other symptoms..."></textarea></label>
+    <button class="button primary" type="submit">Save symptom record</button>
+  </form>
+</div>
+{% endblock %}
